@@ -11,6 +11,7 @@ public class KafkaProducer {
   private final static Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
   private final Random random = new Random();
 
+
   private final KafkaTemplate<String, String> kafkaTemplate;
 
   public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
@@ -19,11 +20,13 @@ public class KafkaProducer {
 
   public void send(String topic, String payload) {
     if (random.nextInt(100) < 10) {
+      LOGGER.info("10% ошибка при отправке сообщения!");
       throw new RuntimeException();
     }
     LOGGER.info("send to kafka, topic {}, payload {}", topic, payload);
     kafkaTemplate.send(topic, payload);
     if (random.nextInt(100) < 2) {
+      LOGGER.info("2% ошибка при отправке сообщения!");
       throw new RuntimeException();
     }
   }
